@@ -1,8 +1,7 @@
 {
-  "assemblyPath": "input/Engine MKII/Engine MKII.iam",
-  "projectPath": "input/Engine MKII/Engine MKII.ipj",
+  "assemblyPath": "input/BastianToyotaGoodYear/BastianToyotaGoodYear.stp",
+  "projectPath": "input/BastianToyotaGoodYear/BastianToyotaGoodYear.ipj",
   "SuppressLinkToFile": true,
-  "LOD":  "Master",
   "CreateIndependentBodiesOnFailedBoolean": {
     "type": "boolean",
     "value": true
@@ -15,7 +14,7 @@
       "kDeriveAsWorkSurface"
     ],
     "type": "enum",
-    "value": "kDeriveAsSingleBodyWithSeams"
+    "value": "kDeriveAsMultipleBodies"
   },
   "RemoveInternalParts": {
     "type": "boolean",
@@ -66,7 +65,7 @@
   },
   "RemovePartsSize": {
     "type": "number",
-    "value": 1
+    "value": 2
   },
   "RemovePartsBySize": {
     "type": "boolean",

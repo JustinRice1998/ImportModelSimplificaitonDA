@@ -54,9 +54,12 @@ namespace Interaction
         private static List<string> GetActivityCommandLine()
         {
             return new List<string> {
-              $"$(engine.path)\\InventorCoreConsole.exe /al $(appbundles[{Constants.Activity.Id}].path)",
-              $"$(appbundles[ShrinkWrap].path)\\ShrinkWrapPlugin.bundle\\Contents\\converter.bat"
+              $"$(engine.path)\\InventorCoreConsole.exe /al $(appbundles[{Constants.Activity.Id}].path)"
             };
+            //return new List<string> {
+            //  $"$(engine.path)\\InventorCoreConsole.exe /al $(appbundles[{Constants.Activity.Id}].path)",
+            //  $"$(appbundles[ShrinkWrap].path)\\ShrinkWrapPlugin.bundle\\Contents\\converter.bat"
+            //};
         }
 
         /// <summary>
@@ -120,8 +123,8 @@ namespace Interaction
         private static Dictionary<string, IArgument> GetWorkItemArgs()
         {
             string json = System.IO.File.ReadAllText("params.json").Replace("\r\n", "");
-            const string myOssBucket = "https://developer.api.autodesk.com/oss/v2/buckets/adam_simplify";
-            const string accessToken = "eyJhbGciOiJIUzI1NiIsImtpZCI6Imp3dF9zeW1tZXRyaWNfa2V5In0.eyJzY29wZSI6WyJkYXRhOnJlYWQiLCJkYXRhOndyaXRlIiwiZGF0YTpjcmVhdGUiLCJidWNrZXQ6cmVhZCIsImJ1Y2tldDpkZWxldGUiLCJidWNrZXQ6dXBkYXRlIiwiYnVja2V0OmNyZWF0ZSJdLCJjbGllbnRfaWQiOiJyR20wbU85alZTc0QyeUJFRGs5TVJ0WFFUd3NhNjF5MCIsImF1ZCI6Imh0dHBzOi8vYXV0b2Rlc2suY29tL2F1ZC9qd3RleHA2MCIsImp0aSI6Imk0QjNpTGpTWmlqZVRtTXJPbzRKdmV6TFR0NldOUkV3RGxyMTRYR3pUdlp6UEtVWVdIbnQwUE9QejBnU0NqdHIiLCJleHAiOjE1ODczMTc1NzV9.EqfQbtCNWzw_spYroB3GfVG4LP4WZmZo1UGM6WiAQS0";
+            const string myOssBucket = "https://developer.api.autodesk.com/oss/v2/buckets/pugvwjyn5udkpb0g2zv54zicddguubqz_simplify";
+            const string accessToken = "eyJhbGciOiJIUzI1NiIsImtpZCI6Imp3dF9zeW1tZXRyaWNfa2V5In0.eyJzY29wZSI6WyJjb2RlOmFsbCIsImRhdGE6d3JpdGUiLCJkYXRhOnJlYWQiLCJidWNrZXQ6Y3JlYXRlIiwiYnVja2V0OmRlbGV0ZSIsImJ1Y2tldDpyZWFkIl0sImNsaWVudF9pZCI6InB1R1Z3SlluNXVES1BCMEcyenY1NHpJQ0RkZ3VVYnF6IiwiYXVkIjoiaHR0cHM6Ly9hdXRvZGVzay5jb20vYXVkL2p3dGV4cDYwIiwianRpIjoiN3dwOUpGd2VnbWt5V3pyMHpsMkdoRlNNSWF3QnAyVWszYWFRYjNSSmJXRmhJVE4zZkQ2QUVieHF2Q0cyRHl1TSIsImV4cCI6MTU4OTQ2NzEzM30.vqqu-Q45MeLtt8KFzrEfNAnLOPpNYX9tjdX0dH1BinE";
 
             // TODO: update the URLs below with real values
             return new Dictionary<string, IArgument>
@@ -130,7 +133,7 @@ namespace Interaction
                             Constants.Parameters.inputFile,
                             new XrefTreeArgument
                             {
-                                Url = $"{myOssBucket}/objects/Engine MKII.iam.zip",
+                                Url = $"{myOssBucket}/objects/BastianToyotaGoodYear.zip",
                                 Headers = new Dictionary<string, string>()
                                 {
                                     { "Authorization", "Bearer " + accessToken }
@@ -149,6 +152,7 @@ namespace Interaction
                             new XrefTreeArgument
                             {
                                 Verb = Verb.Put,
+                                Optional = true,
                                 Url = $"{myOssBucket}/objects/output.ipt",
                                 Headers = new Dictionary<string, string>()
                                 {
@@ -161,6 +165,7 @@ namespace Interaction
                             new XrefTreeArgument
                             {
                                 Verb = Verb.Put,
+                                Optional = true,
                                 Url = $"{myOssBucket}/objects/output.obj.zip",
                                 Headers = new Dictionary<string, string>()
                                 {
@@ -173,6 +178,7 @@ namespace Interaction
                             new XrefTreeArgument
                             {
                                 Verb = Verb.Put,
+                                Optional = true,
                                  Url = $"{myOssBucket}/objects/output.fbx",
                                  Headers = new Dictionary<string, string>()
                                 {

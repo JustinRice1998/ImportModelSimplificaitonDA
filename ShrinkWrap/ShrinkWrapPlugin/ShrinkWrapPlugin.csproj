@@ -51,6 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MemoryTracking.cs" />
     <Compile Include="PluginServer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SampleAutomation.cs" />

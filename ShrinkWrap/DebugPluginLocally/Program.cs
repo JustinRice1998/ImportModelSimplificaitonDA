@@ -14,6 +14,7 @@ namespace DebugPluginLocally
 
                 try
                 {
+                    Console.WriteLine(DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss.ffff"));
                     Console.WriteLine("Running locally...");
                     // run the plugin
                     //inv.GetInventorApplication().SilentOperation = true;
@@ -32,6 +33,7 @@ namespace DebugPluginLocally
                     //inv.GetInventorApplication().SilentOperation = false;
                     if (System.Diagnostics.Debugger.IsAttached)
                     {
+                        Console.WriteLine(DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss.ffff"));
                         Console.WriteLine("Press any key to exit. All documents will be closed.");
                         Console.ReadKey();
                     }

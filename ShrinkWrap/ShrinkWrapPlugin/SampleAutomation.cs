@@ -124,7 +124,7 @@ namespace ShrinkWrapPlugin
         //    transAddin.Activate();
 
         //    LogTrace("Stp Addin Activated");
-            
+
         //    //Prepare the 1st parameter for Open(), the file name
         //    DataMedium file = transObjects.CreateDataMedium();
         //    file.FileName = fullAssemblyPath;
@@ -155,36 +155,50 @@ namespace ShrinkWrapPlugin
 
         //    object sourceObject;
         //    transAddin.Open(file, context, options, out sourceObject);
-            
+
         //    AssemblyDocument doc = (AssemblyDocument)sourceObject;
-      
+
         //    return doc;
         //}
 
+
         public AssemblyDocument AnyCADImport(string fullAssemblyPath)
         {
+            var em = inventorApplication.ErrorManager;
             LogTrace("AnyCADImport called");
             inventorApplication.SaveOptions.TranslatorReportLocation = ReportLocationEnum.kNoReport;
             AssemblyDocument doc = (AssemblyDocument)inventorApplication.Documents.Add(DocumentTypeEnum.kAssemblyDocumentObject);
             LogTrace("New Assembly created");
             AssemblyComponentDefinition compDef = doc.ComponentDefinition;
             ImportedGenericComponentDefinition importedCompDef = (ImportedGenericComponentDefinition)compDef.ImportedComponents.CreateDefinition(fullAssemblyPath);
-            importedCompDef.ReferenceModel = false;
+            importedCompDef.ReferenceModel = true;
 
             string saveFilesLocation = System.IO.Path.GetDirectoryName(fullAssemblyPath) + "\\";
             LogTrace("Imported Files Location = " + saveFilesLocation);
             importedCompDef.SaveFilesLocation = saveFilesLocation;
             ImportedComponent importedComp = compDef.ImportedComponents.Add((ImportedComponentDefinition)importedCompDef);
 
-            LogTrace("Assembly Path = " + doc.FullFileName);
             try
             {
                 LogTrace("Before Update");
                 doc.Update2();
                 LogTrace("After Update");
                 LogTrace("Before Save");
-                doc.Save2();
+
+                LogTrace($"Checking ErrorManager before save");
+                LogTrace($"HasErrors = {em.HasErrors}");
+                LogTrace($"HasWarnings = {em.HasWarnings}");
+                LogTrace($"AllMessages = {em.AllMessages}");
+
+                doc.SaveAs(System.IO.Path.Combine(saveFilesLocation, "output.iam"), false);
                 LogTrace("After Save");
+
+                LogTrace("Assembly Path = " + doc.FullFileName);
+
+                LogTrace($"Checking ErrorManager after save");
+                LogTrace($"HasErrors = {em.HasErrors}");
+                LogTrace($"HasWarnings = {em.HasWarnings}");
+                LogTrace($"AllMessages = {em.AllMessages}");
             }
             catch (Exception ex)
             {
@@ -237,6 +251,9 @@ namespace ShrinkWrapPlugin
 
             using (new HeartBeat())
             {
+                using (new MemoryTracking())
+                {
+                
                 if (parameters.ContainsKey("projectPath"))
                 {
                     string projectPath = parameters.GetValue("projectPath").Value<string>();
@@ -398,6 +415,8 @@ namespace ShrinkWrapPlugin
                 }
 
                 LogTrace("Finished");
+
+                }
             }
         }
 

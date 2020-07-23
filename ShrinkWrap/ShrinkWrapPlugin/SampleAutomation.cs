@@ -17,6 +17,7 @@
 /////////////////////////////////////////////////////////////////////
 
 using System;
+using System.Collections;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
@@ -25,6 +26,7 @@ using Autodesk.Forge.DesignAutomation.Inventor.Utils;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using System.IO.Compression;
+using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 
 namespace ShrinkWrapPlugin
@@ -251,9 +253,8 @@ namespace ShrinkWrapPlugin
 
             using (new HeartBeat())
             {
-                using (new MemoryTracking())
-                {
                 
+                CheckPerformance();
                 if (parameters.ContainsKey("projectPath"))
                 {
                     string projectPath = parameters.GetValue("projectPath").Value<string>();
@@ -416,7 +417,6 @@ namespace ShrinkWrapPlugin
 
                 LogTrace("Finished");
 
-                }
             }
         }
 
@@ -459,6 +459,26 @@ namespace ShrinkWrapPlugin
         private static void LogError(string message)
         {
             Trace.TraceError(message);
+        }
+
+        private async Task CheckPerformance()
+        {
+            Console.WriteLine("Starting to Check Performance");
+            while (true)
+            {
+                try
+                {
+                    var proc = Process.GetCurrentProcess();
+                    var mem = proc.WorkingSet64;
+                    var cpu = proc.TotalProcessorTime;
+                    LogTrace("My process used working set {0:n3} K of working set and CPU {1:n} msec", mem / 1024.0, cpu.TotalMilliseconds);
+                }
+                catch (Exception exception)
+                {
+                    Console.WriteLine("Failed Memory Check: " + exception.Message);
+                }
+                await Task.Delay(5000);
+            }
         }
 
         #endregion
